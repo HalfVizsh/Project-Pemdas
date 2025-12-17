@@ -1,11 +1,8 @@
 package pemdacom.mycompany.proyekpemdaskel10;
-
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainMenu {
     Scanner input = new Scanner(System.in);
-    DatabaseNasabah DBN = new DatabaseNasabah();
     Transaksi transaksi = new Transaksi();
     Nasabah currentNasabah;
     //Mendapatkan nasabah saat ini
@@ -20,27 +17,22 @@ public class MainMenu {
         pilihan = input.nextInt();
         input.nextLine();
         switch (pilihan){
-            case 1:
-                //Membaca saldo
+            case 1 -> //Membaca saldo
                 currentNasabah.ReadSaldo();
-                break;
-            case 2:
-                TF();
-                break;
-            case 3:
-                CL();
-                break;
-            case 4:
+            case 2 -> TF();
+            case 3 -> CL();
+            case 4 -> {
                 //Mutasi Rekening
                 System.out.println("Ini mutasi rekening anda");
                 currentNasabah.cetakMutasi();
                 System.out.println();
-                break;
-            case 5:
+                }
+            case 5 -> {
                 System.out.println("Anda Telah Keluar, sampai jumpa Tuan/Nyonya "+currentNasabah.getNama()+"\n");
                 return;
-            default:
-                break;
+                }
+            default -> {
+                }
             } 
         }while (pilihan!=5);   
     }
@@ -52,7 +44,7 @@ public class MainMenu {
             System.out.println("Tidak bisa transfer ke rekening sendiri!\n");
             return;
         }
-        if (DBN.cekNasabah(NasabahTujuan))//Cek nasabahnnya ada apa ngga
+        if (DatabaseNasabah.cekNasabah(NasabahTujuan))//Cek nasabahnnya ada apa ngga
         {
             System.out.print ("Transfer ke Rekening: "+NasabahTujuan+"\nMasukkan nominal yang ingin anda transfer: ");
             int jumlah = input.nextInt();
@@ -69,7 +61,7 @@ public class MainMenu {
                 System.out.println("Nominal tidak valid mohon masukkan ulang!\n");
                 return;
             }
-            Nasabah targetNasabah = DBN.getNasabahByName(NasabahTujuan);
+            Nasabah targetNasabah = DatabaseNasabah.getNasabahByName(NasabahTujuan);
             transaksi.Transfer(currentNasabah, targetNasabah, jumlah);
             //Tambah Mutasi Rekening
             MutasiRekening MR = new MutasiRekening("Transfer", transaksi.getDate(), NasabahTujuan,jumlah);
